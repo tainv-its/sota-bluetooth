@@ -1,6 +1,6 @@
-# Contributor: Tai Nguyen Polański <tainv@its-global.vn>
-# Maintainer: Tai Nguyen Polański <tainv@its-global.vn>
-pkgname=sota-bluetooth
+# Contributor: Tai Nguyen <tainv@its-global.vn>
+# Maintainer: Tai Nguyen <tainv@its-global.vn>
+pkgname=bluetooth-pkg
 pkgver=0.1.1
 pkgrel=0
 pkgdesc="ble peripheral service"
@@ -23,5 +23,5 @@ package() {
 
 
 sha512sums="
-e5f24a9f1c6b38cdfadff022afbb82b93b29cbf10741ab4771c623b5e118a8acc74ed21b5fb7592d5a782e8d4706a18d346fd04fe5f24ba83dfc73841d97cb48  sota-bluetooth-0.1.0.tar.gz
+6067134ef23e01b380f82f69ac17bd2351dd085c23d15c2aaa92bf134ecd58683fd897ce7d5d121c427cbae32125320cdaeac2e969d41570d58fa6435c977055  sota-bluetooth-0.1.1.tar.gz
 "
