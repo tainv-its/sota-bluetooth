@@ -1,0 +1,27 @@
+# Contributor: Manh Nguyen Polański <nguyenducmanh.sla@gmail.com>
+# Maintainer: Manh Nguyen Polański <nguyenducmanh.sla@gmail.com>
+pkgname=sota-bluetooth
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="ble peripheral service"
+url="https://git.its-global.vn/iot/sota-bluetooth.git"
+license="Apache-2.0"
+arch="aarch64"
+makedepends="
+    cargo
+    dbus-dev
+    "
+source="https://git.its-global.vn/iot/sota-bluetooth.git/-/archive/$pkgver/sota-bluetooth-$pkgver.tar.gz"
+
+build() {
+    cargo build --frozen --release
+}
+
+package() {
+    install -D -m755 target/release/$pkgname -t "$pkgdir"/usr/bin/
+}
+
+
+sha512sums="
+7080c26a71eddb0d304ffc33685f6d34292885c824ea7cc49f413a2b286927a4446c2e1f38816c33bbb2176be6a7fc2943a96f003f61d2d6d63a621d7684105e  sota-bluetooth-0.1.0.tar.gz
+"
