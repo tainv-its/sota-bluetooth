@@ -1,129 +1,66 @@
-//! Serves a Bluetooth GATT echo server.
+//! Discover Bluetooth devices and list them.
 
-use bluer::{
-  adv::Advertisement,
-  gatt::{
-      local::{
-          characteristic_control, Application, Characteristic, CharacteristicControlEvent,
-          CharacteristicNotify, CharacteristicNotifyMethod, CharacteristicWrite, CharacteristicWriteMethod,
-          Service,
-      },
-      CharacteristicReader, CharacteristicWriter,
-  },
-};
-use futures::{future, pin_mut, StreamExt};
-use std::time::Duration;
-use tokio::{
-  io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
-  time::sleep,
-};
+use bluer::{AdapterEvent, Address, DeviceEvent};
+use futures::{pin_mut, stream::SelectAll, StreamExt};
+use std::{collections::HashSet, env};
+mod discover_devices;
 
-include!("gatt_echo.inc");
-
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> bluer::Result<()> {
-  env_logger::init();
-  let session = bluer::Session::new().await?;
-  let adapter = session.default_adapter().await?;
-  adapter.set_powered(true).await?;
+    let with_changes = env::args().any(|arg| arg == "--changes");
+    let all_properties = env::args().any(|arg| arg == "--all-properties");
+    let filter_addr: HashSet<_> = env::args().filter_map(|arg| arg.parse::<Address>().ok()).collect();
 
-  println!("Advertising on Bluetooth adapter {} with address {}", adapter.name(), adapter.address().await?);
-  let le_advertisement = Advertisement {
-      service_uuids: vec![SERVICE_UUID].into_iter().collect(),
-      discoverable: Some(true),
-      local_name: Some("gatt_echo_server".to_string()),
-      ..Default::default()
-  };
-  let adv_handle = adapter.advertise(le_advertisement).await?;
+    env_logger::init();
+    let session = bluer::Session::new().await?;
+    let adapter = session.default_adapter().await?;
+    println!("Discovering devices using Bluetooth adapter {}\n", adapter.name());
+    adapter.set_powered(true).await?;
 
-  println!("Serving GATT echo service on Bluetooth adapter {}", adapter.name());
-  let (char_control, char_handle) = characteristic_control();
-  let app = Application {
-      services: vec![Service {
-          uuid: SERVICE_UUID,
-          primary: true,
-          characteristics: vec![Characteristic {
-              uuid: CHARACTERISTIC_UUID,
-              write: Some(CharacteristicWrite {
-                  write_without_response: true,
-                  method: CharacteristicWriteMethod::Io,
-                  ..Default::default()
-              }),
-              notify: Some(CharacteristicNotify {
-                  notify: true,
-                  method: CharacteristicNotifyMethod::Io,
-                  ..Default::default()
-              }),
-              control_handle: char_handle,
-              ..Default::default()
-          }],
-          ..Default::default()
-      }],
-      ..Default::default()
-  };
-  let app_handle = adapter.serve_gatt_application(app).await?;
+    let device_events = adapter.discover_devices().await?;
+    pin_mut!(device_events);
 
-  println!("Echo service ready. Press enter to quit.");
-  let stdin = BufReader::new(tokio::io::stdin());
-  let mut lines = stdin.lines();
+    let mut all_change_events = SelectAll::new();
 
-  let mut read_buf = Vec::new();
-  let mut reader_opt: Option<CharacteristicReader> = None;
-  let mut writer_opt: Option<CharacteristicWriter> = None;
-  pin_mut!(char_control);
+    loop {
+        tokio::select! {
+            Some(device_event) = device_events.next() => {
+                match device_event {
+                    AdapterEvent::DeviceAdded(addr) => {
+                        if !filter_addr.is_empty() && !filter_addr.contains(&addr) {
+                            continue;
+                        }
 
-  loop {
-      tokio::select! {
-          _ = lines.next_line() => break,
-          evt = char_control.next() => {
-              match evt {
-                  Some(CharacteristicControlEvent::Write(req)) => {
-                      println!("Accepting write request event with MTU {}", req.mtu());
-                      read_buf = vec![0; req.mtu()];
-                      reader_opt = Some(req.accept()?);
-                  },
-                  Some(CharacteristicControlEvent::Notify(notifier)) => {
-                      println!("Accepting notify request event with MTU {}", notifier.mtu());
-                      writer_opt = Some(notifier);
-                  },
-                  None => break,
-              }
-          },
-          read_res = async {
-              match &mut reader_opt {
-                  Some(reader) if writer_opt.is_some() => reader.read(&mut read_buf).await,
-                  _ => future::pending().await,
-              }
-          } => {
-              match read_res {
-                  Ok(0) => {
-                      println!("Read stream ended");
-                      reader_opt = None;
-                  }
-                  Ok(n) => {
-                      let value = read_buf[..n].to_vec();
-                      println!("Echoing {} bytes: {:x?} ... {:x?}", value.len(), &value[0..4.min(value.len())], &value[value.len().saturating_sub(4) ..]);
-                      if value.len() < 512 {
-                          println!();
-                      }
-                      if let Err(err) = writer_opt.as_mut().unwrap().write_all(&value).await {
-                          println!("Write failed: {}", &err);
-                          writer_opt = None;
-                      }
-                  }
-                  Err(err) => {
-                      println!("Read stream error: {}", &err);
-                      reader_opt = None;
-                  }
-              }
-          }
-      }
-  }
+                        println!("Device added: {addr}");
+                        let res = if all_properties {
+                          discover_devices::query_all_device_properties(&adapter, addr).await
+                        } else {
+                          discover_devices::query_device(&adapter, addr).await
+                        };
+                        if let Err(err) = res {
+                            println!("    Error: {}", &err);
+                        }
 
-  println!("Removing service and advertisement");
-  drop(app_handle);
-  drop(adv_handle);
-  sleep(Duration::from_secs(1)).await;
+                        if with_changes {
+                            let device = adapter.device(addr)?;
+                            let change_events = device.events().await?.map(move |evt| (addr, evt));
+                            all_change_events.push(change_events);
+                        }
+                    }
+                    AdapterEvent::DeviceRemoved(addr) => {
+                        println!("Device removed: {addr}");
+                    }
+                    _ => (),
+                }
+                println!();
+            }
+            Some((addr, DeviceEvent::PropertyChanged(property))) = all_change_events.next() => {
+                println!("Device changed: {addr}");
+                println!("    {property:?}");
+            }
+            else => break
+        }
+    }
 
-  Ok(())
+    Ok(())
 }
