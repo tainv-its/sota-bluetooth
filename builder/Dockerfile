@@ -1,6 +1,6 @@
 
 
-FROM alpine:edge
+FROM alpine:3.15
 
 ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 

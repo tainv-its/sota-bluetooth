@@ -1,17 +1,17 @@
 # Contributor: Tai Nguyen <tainv@its-global.vn>
 # Maintainer: Tai Nguyen <tainv@its-global.vn>
 pkgname=bluetooth-pkg
-pkgver=0.1.1
+pkgver=0.0.1
 pkgrel=0
 pkgdesc="ble peripheral service"
-url="https://git.its-global.vn/iot/sota-bluetooth.git"
+url="git@github.com:tainv-its/sota-bluetooth.git"
 license="Apache-2.0"
 arch="aarch64"
 makedepends="
     cargo
     dbus-dev
     "
-source="https://git.its-global.vn/iot/sota-bluetooth.git/-/archive/$pkgver/sota-bluetooth-$pkgver.tar.gz"
+source="git@github.com:tainv-its/sota-bluetooth.git/-/archive/$pkgver/sota-bluetooth-$pkgver.tar.gz"
 
 build() {
     cargo build --frozen --release
@@ -23,5 +23,5 @@ package() {
 
 
 sha512sums="
-4b8d589faa2da38433ceec57127be419a488bc304de73785a20cf08096cce673fa842bd9a41a4e2e6a091870a6b96d7051668ee8c7f770656703d5e51d57c318  sota-bluetooth-0.1.1.tar.gz
+15483c858d284da8adf7e4515ea67b42430e9b51ee57a046b7386a2135c5948018364b053afe8af4872a5ce6f3d1b098e729929cfb8f04caab81205cc2a3d350  sota-bluetooth-0.1.1.tar.gz
 "
