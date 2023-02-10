@@ -8,20 +8,20 @@ url="https://github.com/tainv-its/sota-bluetooth"
 license="Apache-2.0"
 arch="aarch64"
 makedepends="
-    cargo
-    dbus-dev
-    "
+  cargo
+  dbus-dev
+"
 source="https://github.com/tainv-its/sota-bluetooth/archive/$pkgver/sota-bluetooth-$pkgver.tar.gz"
 
 build() {
-    cargo build --frozen --release
+  CARGO_LOG=trace cargo build --frozen --release
 }
 
 package() {
-    install -D -m755 target/release/$pkgname -t "$pkgdir"/usr/bin/
+  install -D -m755 target/release/$pkgname -t "$pkgdir"/usr/bin/
 }
 
 
 sha512sums="
-f526f0c60c78d2fb5ca64680f727da7d6b7c4ceb386c82d0bca0b2868e8923f0b67ce03192e803b9c8cbd918d86f0ada3ad03857560977be8b4d1ebf13b2572d  sota-bluetooth-0.0.1.tar.gz
+996dda060512e0a1247634dccda033c69cb69c1a06f677d6d54aac28ded13275e0d8147638e5ab13734f57c771489979904b0aa48cf24c260932e1e35a2e801c  sota-bluetooth-0.0.1.tar.gz
 "
