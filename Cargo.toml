@@ -1,3 +1,8 @@
+[package]
+name = "sota-bluetooth"
+version = "0.0.2"
+edition = "2021"
+
 [features]
 default = []
 full = ["bluetoothd", "id", "l2cap", "rfcomm", "serde"]
@@ -43,10 +48,3 @@ uuid = "1"
 tokio = { version = "1", features = ["io-std", "io-util", "rt-multi-thread"] }
 env_logger = "0.10"
 rand = "0.8"
-
-[package]
-name = "sota-bluetooth"
-version = "0.0.2"
-edition = "2021"
-required-features = ["bluetoothd"]
-doc-scrape-examples = true
