@@ -7,7 +7,7 @@ ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 ADD repositories /etc/apk/repositories
 RUN apk update && \
     apk -U add alpine-sdk && \
-    apk add libdbus-1-dev pkg-config
+    apk add pkgconfig dbus-dev
 
 RUN mkdir -p /var/cache/distfiles && \
     adduser -D packager && \

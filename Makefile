@@ -18,7 +18,6 @@ aports_update: aports
 
 user.abuild:
 	mkdir -p user.abuild
-	tar -zcvf bluetooth-pkg-0.0.1.tar.gz bluetooth-pkg
 
 build: builder target aports
 	docker run -ti \
