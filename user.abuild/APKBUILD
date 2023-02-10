@@ -21,7 +21,6 @@ package() {
   install -D -m755 target/release/$pkgname -t "$pkgdir"/usr/bin/
 }
 
-
 sha512sums="
-459c36df17adbe4ee551be1db2403d9c866881b3e38d6e792932bbf1bd7977df8923882f50b8775787977e879466671ef99c755900278ca976d887e7158964ab  sota-bluetooth-0.0.2.tar.gz
+d554048489f2b31d887d303e07d43c3ff47feadb82b19ccc3bbba53a028d38a240accd80778e5ea8da921d91f7a68167b160c217e8ff027f0ca1a97fa29a4e03  sota-bluetooth-0.0.2.tar.gz
 "

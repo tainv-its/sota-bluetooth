@@ -5,19 +5,22 @@ edition = "2021"
 
 [features]
 default = []
-full = ["bluetoothd", "id", "l2cap", "rfcomm", "serde"]
-bluetoothd = [
-    "dbus",
-    "dbus-tokio",
-    "dbus-crossroads",
-    "pin-project",
-    "tokio/rt",
-    "tokio/sync",
-    "tokio/macros",
-    "tokio-stream",
-    "lazy_static",
-    "custom_debug",
-    "displaydoc",
+full = [
+  "dbus",
+  "dbus-tokio",
+  "dbus-crossroads",
+  "pin-project",
+  "tokio/rt",
+  "tokio/sync",
+  "tokio/macros",
+  "tokio-stream",
+  "lazy_static",
+  "custom_debug",
+  "displaydoc",
+  "id",
+  "l2cap",
+  "rfcomm",
+  "serde"
 ]
 
 id = []
