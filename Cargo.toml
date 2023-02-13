@@ -15,8 +15,6 @@ full = [
   "tokio/macros",
   "tokio-stream",
   "lazy_static",
-  "custom_debug",
-  "displaydoc",
   "id",
   "l2cap",
   "rfcomm",
