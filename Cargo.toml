@@ -24,7 +24,7 @@ full = [
 id = []
 l2cap = []
 rfcomm = []
-serde = ["uuid/serde", "dep:serde"]
+serde = ["uuid/serde", "serde"]
 
 [dependencies]
 dbus = { version = "0.9", features = ["futures"], optional = true }
