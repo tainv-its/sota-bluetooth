@@ -1,6 +1,6 @@
 [package]
 name = "sota-bluetooth"
-version = "0.0.3"
+version = "0.0.4"
 edition = "2021"
 
 [features]
@@ -24,7 +24,7 @@ full = [
 id = []
 l2cap = []
 rfcomm = []
-serde = ["uuid/serde", "serde"]
+serde = ["uuid/serde", "dep:serde"]
 
 [dependencies]
 dbus = { version = "0.9", features = ["futures"], optional = true }
