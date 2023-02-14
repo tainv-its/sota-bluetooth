@@ -5,6 +5,9 @@ use futures::{pin_mut, stream::SelectAll, StreamExt};
 use std::{collections::HashSet, env};
 mod discover_devices;
 
+#[macro_use]
+extern crate log;
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> bluer::Result<()> {
     let with_changes = env::args().any(|arg| arg == "--changes");

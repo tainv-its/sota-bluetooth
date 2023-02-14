@@ -1,7 +1,6 @@
 //! Discover Bluetooth devices and list them.
 
 use bluer::{Adapter, Address};
-use futures::{stream::SelectAll, StreamExt};
 
 pub async fn query_device(adapter: &Adapter, addr: Address) -> bluer::Result<()> {
     let device = adapter.device(addr)?;
