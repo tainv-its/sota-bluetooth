@@ -1,6 +1,10 @@
 
 FROM alpine:3.15
 
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
+
 ADD repositories /etc/apk/repositories
 RUN apk add --no-cache \
         alpine-sdk \
@@ -14,12 +18,6 @@ RUN mkdir -p /var/cache/distfiles && \
     chgrp abuild /var/cache/distfiles && \
     chmod g+w /var/cache/distfiles && \
     echo "packager    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-ADD setup.sh /home/packager/bin/setup.sh
-
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
 
 RUN set -eux; \
     apkArch="$(apk --print-arch)"; \
@@ -38,6 +36,8 @@ RUN set -eux; \
     rustup --version; \
     cargo --version; \
     rustc --version;
+
+ADD setup.sh /home/packager/bin/setup.sh
 
 WORKDIR /work
 USER    packager
