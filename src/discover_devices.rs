@@ -3,7 +3,7 @@
 use bluer::{Adapter, Address};
 use futures::{stream::SelectAll, StreamExt};
 
-async fn query_device(adapter: &Adapter, addr: Address) -> bluer::Result<()> {
+pub async fn query_device(adapter: &Adapter, addr: Address) -> bluer::Result<()> {
     let device = adapter.device(addr)?;
     println!("    Address type:       {}", device.address_type().await?);
     println!("    Name:               {:?}", device.name().await?);
@@ -21,7 +21,7 @@ async fn query_device(adapter: &Adapter, addr: Address) -> bluer::Result<()> {
     Ok(())
 }
 
-async fn query_all_device_properties(adapter: &Adapter, addr: Address) -> bluer::Result<()> {
+pub async fn query_all_device_properties(adapter: &Adapter, addr: Address) -> bluer::Result<()> {
     let device = adapter.device(addr)?;
     let props = device.all_properties().await?;
     for prop in props {
