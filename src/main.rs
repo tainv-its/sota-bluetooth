@@ -5,8 +5,7 @@ use futures::{pin_mut, stream::SelectAll, StreamExt};
 use std::{collections::HashSet, env};
 mod discover_devices;
 
-#[macro_use]
-extern crate log;
+use env_logger::init;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> bluer::Result<()> {
@@ -14,7 +13,7 @@ async fn main() -> bluer::Result<()> {
     let all_properties = env::args().any(|arg| arg == "--all-properties");
     let filter_addr: HashSet<_> = env::args().filter_map(|arg| arg.parse::<Address>().ok()).collect();
 
-    env_logger::init();
+    init();
     let session = bluer::Session::new().await?;
     let adapter = session.default_adapter().await?;
     println!("Discovering devices using Bluetooth adapter {}\n", adapter.name());
