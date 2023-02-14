@@ -3,10 +3,13 @@ FROM alpine:3.15
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
+    PATH=/usr/local/cargo/bin:$PATH \
+    CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 ADD repositories /etc/apk/repositories
-RUN apk add --no-cache \
+RUN apk update && \
+    apk -U add alpine-sdk && \ 
+    apk add --no-cache \
         alpine-sdk \
         pkgconfig \
         dbus-dev  \

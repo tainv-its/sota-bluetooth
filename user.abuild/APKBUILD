@@ -14,7 +14,7 @@ makedepends="
 source="https://github.com/tainv-its/sota-bluetooth/archive/$pkgver/sota-bluetooth-$pkgver.tar.gz"
 
 build() {
-  CARGO_LOG=trace cargo build -Z "dep:" --release
+  CARGO_LOG=trace cargo build --release
 }
 
 package() {
@@ -22,5 +22,5 @@ package() {
 }
 
 sha512sums="
-f8597f17f3be1b41593da2556e1f5e61a11bf7b9f332bfec7b331671530c0ad35741bc0333d0a9214bfd19c71f9be044ecfcc024fca7b848ffd8fe17dc038ace  sota-bluetooth-0.0.4.tar.gz
+478e024b5a27de981a1c38cbc8580a8c8a57dc90f98dd745f126422918dcc0dcb5dd7fae805c57d25c9b1d21f8ddecaec3e51c8f2347fc284357f256d8ffa760  sota-bluetooth-0.0.4.tar.gz
 "
