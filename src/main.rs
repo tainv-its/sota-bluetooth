@@ -4,16 +4,18 @@ use bluez::adapter::Adapter;
 use bluez::bluetooth_device::{BluetoothDevice, GattService, GattCharacteristic};
 use std::{thread, time};
 
+include!("gatt.inc");
+
 fn main() {
     let adapter = Adapter::new().unwrap();
-    let device = BluetoothDevice::new("your-device-name", &adapter).unwrap();
+    let device = BluetoothDevice::new("Sota BLE", &adapter).unwrap();
 
     // Tạo service để gửi qua lại dữ liệu giữa Pi và các thiết bị khác.
-    let service = GattService::new("your-service-uuid", true);
+    let service = GattService::new(SERVICE_UUID, true);
 
     // Tạo characteristic dùng để đại diện cho service.
     let props = ["read", "write"];
-    let characteristic = GattCharacteristic::new("your-characteristic-uuid", &props, &service.get_path());
+    let characteristic = GattCharacteristic::new(CHARACTERISTIC_UUID, &props, &service.get_path());
 
     // Thêm characteristic vào service.
     service.add_characteristic(characteristic.clone()).unwrap();
