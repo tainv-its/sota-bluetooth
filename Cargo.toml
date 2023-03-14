@@ -4,7 +4,7 @@ version = "0.0.5"
 edition = "2021"
 
 [dependencies]
-bluez = "0.30.2"
+bluez = "0.4.0"
 dbus = "0.9.7"
 dbus-tokio = "0.7.6"
 zbus = { version = "3.11", features = [] }
