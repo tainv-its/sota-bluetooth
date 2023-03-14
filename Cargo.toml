@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 dbus = "0.9.7"
-dbus-tokio = "0.8"
+dbus-tokio = "0.7.6"
 zbus = { version = "3.0", features = ["gatt"] }
