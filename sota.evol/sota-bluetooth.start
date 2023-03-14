@@ -1,0 +1,7 @@
+#!/bin/sh
+
+apk update
+apk add /etc/local.d/sota-bluetooth-0.0.5-r0.apk
+
+cp /etc/local.d/bluetooth.conf /etc/bluetooth/main.conf
+rc-service bluetooth restart
