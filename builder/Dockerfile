@@ -13,9 +13,7 @@ RUN apk update && \
         dbus-dev  \
         bluetooth \
         bluez \
-        gcc \
-        libbluetooth-dev \
-        libudev-dev && \ 
+        gcc && \
     mkdir -p /var/cache/distfiles && \
     adduser -D packager && \
     addgroup packager abuild && \
