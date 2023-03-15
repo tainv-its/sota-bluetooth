@@ -1,4 +1,3 @@
-
 FROM alpine:3.15
 
 ENV RUSTUP_HOME=/usr/local/rustup \
@@ -8,19 +7,21 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 
 ADD repositories /etc/apk/repositories
 RUN apk update && \
-    apk -U add alpine-sdk && \ 
     apk add --no-cache \
         alpine-sdk \
         pkgconfig \
         dbus-dev  \
-        gcc
-
-RUN mkdir -p /var/cache/distfiles && \
+        bluetooth \
+        bluez \
+        gcc \
+        libbluetooth-dev \
+        libudev-dev && \ 
+    mkdir -p /var/cache/distfiles && \
     adduser -D packager && \
     addgroup packager abuild && \
     chgrp abuild /var/cache/distfiles && \
     chmod g+w /var/cache/distfiles && \
-    echo "packager    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 RUN set -eux; \
     apkArch="$(apk --print-arch)"; \
@@ -29,7 +30,6 @@ RUN set -eux; \
         aarch64) rustArch='aarch64-unknown-linux-musl' ;; \
         *) echo >&2 "unsupported architecture: $apkArch"; exit 1 ;; \
     esac; \
-    \
     url="https://static.rust-lang.org/rustup/dist/${rustArch}/rustup-init"; \
     wget "$url"; \
     chmod +x rustup-init; \
@@ -43,4 +43,4 @@ RUN set -eux; \
 ADD setup.sh /home/packager/bin/setup.sh
 
 WORKDIR /work
-USER    packager
+USER packager
