@@ -7,13 +7,14 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 
 ADD repositories /etc/apk/repositories
 RUN apk update && \
+    apk -U add alpine-sdk && \ 
     apk add --no-cache \
         alpine-sdk \
         pkgconfig \
         dbus-dev \
         bluez-libs \
         gcc \
-        clang \
+        clang && \
     mkdir -p /var/cache/distfiles && \
     adduser -D packager && \
     addgroup packager abuild && \
@@ -21,7 +22,7 @@ RUN apk update && \
     chmod g+w /var/cache/distfiles && \
     echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-ENV LIBCLANG_PATH=/usr/lib/llvm11/lib
+ENV LIBCLANG_PATH=/usr/lib/llvm11/lib.
 
 RUN set -eux; \
     apkArch="$(apk --print-arch)"; \
