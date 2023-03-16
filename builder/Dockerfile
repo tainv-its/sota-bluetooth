@@ -10,16 +10,18 @@ RUN apk update && \
     apk add --no-cache \
         alpine-sdk \
         pkgconfig \
-        dbus-dev  \
-        bluetooth \
-        bluez \
-        gcc && \
+        dbus-dev \
+        bluez-libs \
+        gcc \
+        clang \
     mkdir -p /var/cache/distfiles && \
     adduser -D packager && \
     addgroup packager abuild && \
     chgrp abuild /var/cache/distfiles && \
     chmod g+w /var/cache/distfiles && \
     echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+ENV LIBCLANG_PATH=/usr/lib/llvm11/lib
 
 RUN set -eux; \
     apkArch="$(apk --print-arch)"; \

@@ -10,6 +10,8 @@ arch="aarch64"
 makedepends="
   cargo
   dbus-dev
+  clang
+  llvm-libunwind
 "
 source="https://github.com/tainv-its/sota-bluetooth/archive/$pkgver/sota-bluetooth-$pkgver.tar.gz"
 
@@ -22,5 +24,5 @@ package() {
 }
 
 sha512sums="
-6360f3c7b4ccecf237538a50b94672ccfe067f18b3a530cb47e2b2c79a7ca0fbde47009e41c68da89f24999a61c928c028cf5219ec1e0eaae7cbee7da9f9c874  sota-bluetooth-0.0.5.tar.gz
+6b12b113d974ad6610ae8e14894df3b3ee698d8d3c209a75fd26d982891719c6e0933c4e2fabeff3ed8c3dc7685a2c334dd7f6aacd5c692d06e8d74eaa965cba  sota-bluetooth-0.0.5.tar.gz
 "

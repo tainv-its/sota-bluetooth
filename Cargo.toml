@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 bluez = "0.4.0"
+bluez-sys = { version = "0.4.0", default-features = false }
 dbus = "0.9.7"
 dbus-tokio = "0.7.6"
 zbus = { version = "3.11", features = [] }
