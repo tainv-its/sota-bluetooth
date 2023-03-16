@@ -24,5 +24,5 @@ package() {
 }
 
 sha512sums="
-6b12b113d974ad6610ae8e14894df3b3ee698d8d3c209a75fd26d982891719c6e0933c4e2fabeff3ed8c3dc7685a2c334dd7f6aacd5c692d06e8d74eaa965cba  sota-bluetooth-0.0.5.tar.gz
+3ef6f62132bf4af18fc5c661d7095aed4afb6f4d869b3500cdab1d5d8c9e9f1d93e8c3b1012a7d4dd6bc209d46096765e2656a6aa495c83db30aa6ccbc145cf4  sota-bluetooth-0.0.5.tar.gz
 "

@@ -11,6 +11,9 @@ RUN apk update && \
     apk add --no-cache \
         alpine-sdk \
         pkgconfig \
+        libstdc++ \
+        libgcc \
+        llvm \
         dbus-dev \
         bluez-libs \
         gcc \
@@ -22,7 +25,7 @@ RUN apk update && \
     chmod g+w /var/cache/distfiles && \
     echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-ENV LIBCLANG_PATH=/usr/lib/llvm11/lib.
+ENV LIBCLANG_PATH=/usr/lib/llvm12/lib
 
 RUN set -eux; \
     apkArch="$(apk --print-arch)"; \
